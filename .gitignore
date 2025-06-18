@@ -28,3 +28,6 @@ bare_bones-*.tar
 # Database files
 *.db
 *.db-*
+
+priv/static/assets
+assets/node_modules

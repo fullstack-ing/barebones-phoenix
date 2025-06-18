@@ -8,7 +8,7 @@ defmodule BareBonesWeb.UserLive.Settings do
   def render(assigns) do
     ~H"""
     <Layouts.app flash={@flash} current_scope={@current_scope}>
-      <.header class="text-center">
+      <.header>
         Account Settings
         <:subtitle>Manage your account email address and password settings</:subtitle>
       </.header>
@@ -23,8 +23,6 @@ defmodule BareBonesWeb.UserLive.Settings do
         />
         <.button variant="primary" phx-disable-with="Changing...">Change Email</.button>
       </.form>
-
-      <div class="divider" />
 
       <.form
         for={@password_form}
