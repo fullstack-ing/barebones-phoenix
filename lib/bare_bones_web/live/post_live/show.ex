@@ -12,10 +12,10 @@ defmodule BareBonesWeb.PostLive.Show do
         <:subtitle>This is a post record from your database.</:subtitle>
         <:actions>
           <.button navigate={~p"/posts"}>
-            <.icon name="hero-arrow-left" />
+            Back
           </.button>
           <.button variant="primary" navigate={~p"/posts/#{@post}/edit?return_to=show"}>
-            <.icon name="hero-pencil-square" /> Edit post
+            Edit post
           </.button>
         </:actions>
       </.header>

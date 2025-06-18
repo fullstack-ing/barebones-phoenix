@@ -11,7 +11,7 @@ defmodule BareBonesWeb.PostLive.Index do
         Listing Posts
         <:actions>
           <.button variant="primary" navigate={~p"/posts/new"}>
-            <.icon name="hero-plus" /> New Post
+            New Post
           </.button>
         </:actions>
       </.header>
@@ -70,6 +70,7 @@ defmodule BareBonesWeb.PostLive.Index do
   @impl true
   def handle_info({type, %BareBones.Posts.Post{}}, socket)
       when type in [:created, :updated, :deleted] do
-    {:noreply, stream(socket, :posts, Posts.list_posts(socket.assigns.current_scope), reset: true)}
+    {:noreply,
+     stream(socket, :posts, Posts.list_posts(socket.assigns.current_scope), reset: true)}
   end
 end
