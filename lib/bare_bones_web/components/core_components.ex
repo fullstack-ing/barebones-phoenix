@@ -54,23 +54,17 @@ defmodule BareBonesWeb.CoreComponents do
       id={@id}
       phx-click={JS.push("lv:clear-flash", value: %{key: @kind}) |> hide("##{@id}")}
       role="alert"
-      class="toast toast-top toast-end z-50"
       {@rest}
     >
-      <div class={[
-        "alert w-80 sm:w-96 max-w-80 sm:max-w-96 text-wrap",
-        @kind == :info && "alert-info",
-        @kind == :error && "alert-error"
-      ]}>
+      <div>
         <span :if={@kind == :info}>i</span>
         <span :if={@kind == :error}>!</span>
         <div>
-          <p :if={@title} class="font-semibold">{@title}</p>
+          <p :if={@title}>{@title}</p>
           <p>{msg}</p>
         </div>
-        <div class="flex-1" />
-        <button type="button" class="group self-start cursor-pointer" aria-label={gettext("close")}>
-          <span>x</span>
+        <button type="button" aria-label={gettext("close")}>
+          x
         </button>
       </div>
     </div>
@@ -87,18 +81,11 @@ defmodule BareBonesWeb.CoreComponents do
       <.button navigate={~p"/"}>Home</.button>
   """
   attr :rest, :global, include: ~w(href navigate patch method download name value)
-  attr :class, :string
+  attr :class, :string, default: nil
   attr :variant, :string, values: ~w(primary)
   slot :inner_block, required: true
 
   def button(%{rest: rest} = assigns) do
-    variants = %{"primary" => "btn-primary", nil => "btn-primary btn-soft"}
-
-    assigns =
-      assign_new(assigns, :class, fn ->
-        ["btn", Map.fetch!(variants, assigns[:variant])]
-      end)
-
     if rest[:href] || rest[:navigate] || rest[:patch] do
       ~H"""
       <.link class={@class} {@rest}>
@@ -183,94 +170,69 @@ defmodule BareBonesWeb.CoreComponents do
       end)
 
     ~H"""
-    <div class="fieldset mb-2">
+    <fieldset>
       <label>
         <input type="hidden" name={@name} value="false" disabled={@rest[:disabled]} />
-        <span class="label">
-          <input
-            type="checkbox"
-            id={@id}
-            name={@name}
-            value="true"
-            checked={@checked}
-            class={@class || "checkbox checkbox-sm"}
-            {@rest}
-          />{@label}
+        <span>
+          <input type="checkbox" id={@id} name={@name} value="true" checked={@checked} {@rest} />{@label}
         </span>
       </label>
       <.error :for={msg <- @errors}>{msg}</.error>
-    </div>
+    </fieldset>
     """
   end
 
   def input(%{type: "select"} = assigns) do
     ~H"""
-    <div class="fieldset mb-2">
+    <fieldset>
       <label>
-        <span :if={@label} class="label mb-1">{@label}</span>
-        <select
-          id={@id}
-          name={@name}
-          class={[@class || "w-full select", @errors != [] && (@error_class || "select-error")]}
-          multiple={@multiple}
-          {@rest}
-        >
+        <span :if={@label}>{@label}</span>
+        <select id={@id} name={@name} class={@class} multiple={@multiple} {@rest}>
           <option :if={@prompt} value="">{@prompt}</option>
           {Phoenix.HTML.Form.options_for_select(@options, @value)}
         </select>
       </label>
       <.error :for={msg <- @errors}>{msg}</.error>
-    </div>
+    </fieldset>
     """
   end
 
   def input(%{type: "textarea"} = assigns) do
     ~H"""
-    <div class="fieldset mb-2">
+    <fieldset>
       <label>
-        <span :if={@label} class="label mb-1">{@label}</span>
-        <textarea
-          id={@id}
-          name={@name}
-          class={[
-            @class || "w-full textarea",
-            @errors != [] && (@error_class || "textarea-error")
-          ]}
-          {@rest}
-        >{Phoenix.HTML.Form.normalize_value("textarea", @value)}</textarea>
+        <span :if={@label}>{@label}</span>
+        <textarea id={@id} name={@name} class={@class} {@rest}>{Phoenix.HTML.Form.normalize_value("textarea", @value)}</textarea>
       </label>
       <.error :for={msg <- @errors}>{msg}</.error>
-    </div>
+    </fieldset>
     """
   end
 
   # All other inputs text, datetime-local, url, password, etc. are handled here...
   def input(assigns) do
     ~H"""
-    <div class="fieldset mb-2">
+    <fieldset>
       <label>
-        <span :if={@label} class="label mb-1">{@label}</span>
+        <span :if={@label}>{@label}</span>
         <input
           type={@type}
           name={@name}
           id={@id}
           value={Phoenix.HTML.Form.normalize_value(@type, @value)}
-          class={[
-            @class || "w-full input",
-            @errors != [] && (@error_class || "input-error")
-          ]}
+          class={@class}
           {@rest}
         />
       </label>
       <.error :for={msg <- @errors}>{msg}</.error>
-    </div>
+    </fieldset>
     """
   end
 
   # Helper used by inputs to generate form errors
   defp error(assigns) do
     ~H"""
-    <p class="mt-1.5 flex gap-2 items-center text-sm text-error">
+    <p>
       <span>!</span>
       {render_slot(@inner_block)}
     </p>
@@ -286,16 +248,16 @@ defmodule BareBonesWeb.CoreComponents do
 
   def header(assigns) do
     ~H"""
-    <header class={[@actions != [] && "flex items-center justify-between gap-6", "pb-4"]}>
-      <div>
-        <h1 class="text-lg font-semibold leading-8">
-          {render_slot(@inner_block)}
-        </h1>
-        <p :if={@subtitle != []} class="text-sm text-base-content/70">
-          {render_slot(@subtitle)}
-        </p>
+    <header>
+      <h1>
+        {render_slot(@inner_block)}
+      </h1>
+      <p :if={@subtitle != []}>
+        {render_slot(@subtitle)}
+      </p>
+      <div :if={@actions != []}>
+        {render_slot(@actions)}
       </div>
-      <div class="flex-none">{render_slot(@actions)}</div>
     </header>
     """
   end
@@ -332,26 +294,20 @@ defmodule BareBonesWeb.CoreComponents do
       end
 
     ~H"""
-    <table class="table table-zebra">
+    <table>
       <thead>
         <tr>
           <th :for={col <- @col}>{col[:label]}</th>
-          <th :if={@action != []}>
-            <span class="sr-only">{gettext("Actions")}</span>
-          </th>
+          <th :if={@action != []}></th>
         </tr>
       </thead>
       <tbody id={@id} phx-update={is_struct(@rows, Phoenix.LiveView.LiveStream) && "stream"}>
         <tr :for={row <- @rows} id={@row_id && @row_id.(row)}>
-          <td
-            :for={col <- @col}
-            phx-click={@row_click && @row_click.(row)}
-            class={@row_click && "hover:cursor-pointer"}
-          >
+          <td :for={col <- @col} phx-click={@row_click && @row_click.(row)}>
             {render_slot(col, @row_item.(row))}
           </td>
-          <td :if={@action != []} class="w-0 font-semibold">
-            <div class="flex gap-4">
+          <td :if={@action != []}>
+            <div>
               <%= for action <- @action do %>
                 {render_slot(action, @row_item.(row))}
               <% end %>
@@ -379,17 +335,16 @@ defmodule BareBonesWeb.CoreComponents do
 
   def list(assigns) do
     ~H"""
-    <ul class="list">
-      <li :for={item <- @item} class="list-row">
-        <div class="list-col-grow">
-          <div class="font-bold">{item.title}</div>
-          <div>{render_slot(item)}</div>
-        </div>
+    <ul>
+      <li :for={item <- @item}>
+        <div>{item.title}</div>
+        <div>{render_slot(item)}</div>
       </li>
     </ul>
     """
   end
 
+  ## TODO: Add classes to app.css for show hide js functions.
   ## JS Commands
 
   def show(js \\ %JS{}, selector) do

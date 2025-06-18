@@ -29,7 +29,7 @@ defmodule BareBonesWeb.PostLive.Index do
         <:col :let={{_id, post}} label="Draft">{post.draft}</:col>
         <:col :let={{_id, post}} label="Free">{post.free}</:col>
         <:action :let={{_id, post}}>
-          <div class="sr-only">
+          <div>
             <.link navigate={~p"/posts/#{post}"}>Show</.link>
           </div>
           <.link navigate={~p"/posts/#{post}/edit"}>Edit</.link>
