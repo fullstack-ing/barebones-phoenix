@@ -23,7 +23,6 @@ defmodule BareBonesWeb.UserLive.Login do
         </.header>
 
         <div :if={local_mail_adapter?()} class="alert alert-info">
-          <.icon name="hero-information-circle" class="size-6 shrink-0" />
           <div>
             <p>You are running the local mail adapter.</p>
             <p>
