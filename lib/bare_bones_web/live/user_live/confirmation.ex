@@ -6,8 +6,8 @@ defmodule BareBonesWeb.UserLive.Confirmation do
   def render(assigns) do
     ~H"""
     <Layouts.app flash={@flash} current_scope={@current_scope}>
-      <div class="mx-auto max-w-sm">
-        <.header class="text-center">Welcome {@user.email}</.header>
+      <div>
+        <.header>Welcome {@user.email}</.header>
 
         <.form
           :if={!@user.confirmed_at}
@@ -24,7 +24,7 @@ defmodule BareBonesWeb.UserLive.Confirmation do
             type="checkbox"
             label="Keep me logged in"
           />
-          <.button variant="primary" phx-disable-with="Confirming..." class="w-full">
+          <.button variant="primary" phx-disable-with="Confirming...">
             Confirm my account
           </.button>
         </.form>
@@ -44,10 +44,10 @@ defmodule BareBonesWeb.UserLive.Confirmation do
             type="checkbox"
             label="Keep me logged in"
           />
-          <.button variant="primary" phx-disable-with="Logging in..." class="w-full">Log in</.button>
+          <.button variant="primary" phx-disable-with="Logging in...">Log in</.button>
         </.form>
 
-        <p :if={!@user.confirmed_at} class="alert alert-outline mt-8">
+        <p :if={!@user.confirmed_at}>
           Tip: If you prefer passwords, you can enable them in the user settings.
         </p>
       </div>

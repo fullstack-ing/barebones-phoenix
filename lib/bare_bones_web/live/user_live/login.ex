@@ -6,27 +6,23 @@ defmodule BareBonesWeb.UserLive.Login do
   def render(assigns) do
     ~H"""
     <Layouts.app flash={@flash} current_scope={@current_scope}>
-      <div class="mx-auto max-w-sm space-y-4">
-        <.header class="text-center">
+      <div>
+        <.header>
           <p>Log in</p>
           <:subtitle>
             <%= if @current_scope do %>
               You need to reauthenticate to perform sensitive actions on your account.
             <% else %>
-              Don't have an account? <.link
-                navigate={~p"/users/register"}
-                class="font-semibold text-brand hover:underline"
-                phx-no-format
-              >Sign up</.link> for an account now.
+              Don't have an account? <.link navigate={~p"/users/register"} phx-no-format>Sign up</.link> for an account now.
             <% end %>
           </:subtitle>
         </.header>
 
-        <div :if={local_mail_adapter?()} class="alert alert-info">
+        <div :if={local_mail_adapter?()}>
           <div>
             <p>You are running the local mail adapter.</p>
             <p>
-              To see sent emails, visit <.link href="/dev/mailbox" class="underline">the mailbox page</.link>.
+              To see sent emails, visit <.link href="/dev/mailbox">the mailbox page</.link>.
             </p>
           </div>
         </div>
@@ -47,12 +43,10 @@ defmodule BareBonesWeb.UserLive.Login do
             required
             phx-mounted={JS.focus()}
           />
-          <.button class="w-full" variant="primary">
+          <.button variant="primary">
             Log in with email <span aria-hidden="true">→</span>
           </.button>
         </.form>
-
-        <div class="divider">or</div>
 
         <.form
           :let={f}
@@ -82,7 +76,7 @@ defmodule BareBonesWeb.UserLive.Login do
             type="checkbox"
             label="Keep me logged in"
           />
-          <.button class="w-full" variant="primary">
+          <.button variant="primary">
             Log in <span aria-hidden="true">→</span>
           </.button>
         </.form>

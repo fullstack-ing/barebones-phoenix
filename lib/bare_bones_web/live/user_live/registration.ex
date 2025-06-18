@@ -7,12 +7,12 @@ defmodule BareBonesWeb.UserLive.Registration do
   def render(assigns) do
     ~H"""
     <Layouts.app flash={@flash} current_scope={@current_scope}>
-      <div class="mx-auto max-w-sm">
-        <.header class="text-center">
+      <div>
+        <.header>
           Register for an account
           <:subtitle>
             Already registered?
-            <.link navigate={~p"/users/log-in"} class="font-semibold text-brand hover:underline">
+            <.link navigate={~p"/users/log-in"}>
               Log in
             </.link>
             to your account now.
@@ -29,7 +29,7 @@ defmodule BareBonesWeb.UserLive.Registration do
             phx-mounted={JS.focus()}
           />
 
-          <.button variant="primary" phx-disable-with="Creating account..." class="w-full">
+          <.button variant="primary" phx-disable-with="Creating account...">
             Create an account
           </.button>
         </.form>
