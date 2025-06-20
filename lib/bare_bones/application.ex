@@ -8,7 +8,6 @@ defmodule BareBones.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      BareBonesWeb.Telemetry,
       BareBones.Repo,
       {Ecto.Migrator,
        repos: Application.fetch_env!(:bare_bones, :ecto_repos), skip: skip_migrations?()},
