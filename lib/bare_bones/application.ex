@@ -11,7 +11,6 @@ defmodule BareBones.Application do
       BareBones.Repo,
       {Ecto.Migrator,
        repos: Application.fetch_env!(:bare_bones, :ecto_repos), skip: skip_migrations?()},
-      {DNSCluster, query: Application.get_env(:bare_bones, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: BareBones.PubSub},
       # Start a worker by calling: BareBones.Worker.start_link(arg)
       # {BareBones.Worker, arg},
